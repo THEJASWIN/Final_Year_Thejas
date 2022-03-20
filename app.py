@@ -1,8 +1,12 @@
+import os
 import openai
 from flask import *
+from dotenv import load_dotenv,find_dotenv
+
 
 app = Flask(__name__)
-openai.api_key = "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"
+load_dotenv(find_dotenv())
+openai.api_key = os.getenv('OPEN_AI_APIKEY')
 
 @app.route('/')
 def index():
@@ -12,7 +16,7 @@ def index():
 def api_1():
     codePrompt = request.form['input']
     response = openai.Completion.create(
-    engine="davinci-codex",
+    engine="code-davinci-002",
     prompt=codePrompt,
     temperature=0,
     max_tokens=300,
@@ -26,7 +30,7 @@ def api_1():
 def api_2():
     codePrompt = request.form['input']
     response = openai.Completion.create(
-    engine="davinci-codex",
+    engine="code-davinci-002",
     prompt=codePrompt,
     temperature=0,
     max_tokens=513,
