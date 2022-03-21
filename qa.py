@@ -33,5 +33,7 @@ def qa_gen(summaryContent, question):
     return ansGenerated
 
 def show_suggestion(keyword):
-    suggestions=wikipedia.search("Machine learning algorithm", results=10, suggestion=True)
+    suggestions=wikipedia.search(keyword, results=10, suggestion=True)
+    if suggestions[0]==[]:
+        return "Sorry, The provided keyword may be invalid Check for spelling mistakes."
     return suggestions[0]
