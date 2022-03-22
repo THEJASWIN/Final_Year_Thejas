@@ -1,8 +1,11 @@
 import os
 import json
 import openai
+import hashlib
 from qa import *
-from fastapi import FastAPI, Request, Form
+from qgen import *
+from typing import Optional
+from fastapi import FastAPI, UploadFile, Form
 from dotenv import load_dotenv,find_dotenv
 
 app=FastAPI()
@@ -69,8 +72,25 @@ async def note_making(inputPrompt: str = Form(...)):
   prompt=inputPrompt,
   temperature=0.3,
   max_tokens=150,
-  top_p=1,
+  top_p=1, 
   frequency_penalty=0,
   presence_penalty=0
 )
   return response.choices[0].text
+
+@app.post("/api/qagen")
+async def qa_generation(inputPrompt: str = Form(...)):
+  return Qa_Gen(inputPrompt)
+
+@app.post("/test")
+async def qa_generation(keywordPrompt: Optional[str] = Form(None),File: Optional[UploadFile] = None):
+  content = await File.read()
+  contentText=content.decode("utf-8")
+"""
+TODO:
+- Get Content form Wiki API for provided Keyword
+- Get QA from QA API for provided Content
+- Check Condition
+- Call QA API for QA
+- Return QA MCQ
+"""
