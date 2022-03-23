@@ -60,7 +60,7 @@ async def qgen(keywordPrompt: str = Form(...),question: str = Form(...)):
   return generatedAnswer
 
 @app.post("/api/suggestion")
-async def qgen(keywordPrompt: str = Form(...)):
+async def suggestion(keywordPrompt: str = Form(...)):
   return show_suggestion(keywordPrompt)
 
 @app.post("/api/notes")

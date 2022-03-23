@@ -1,5 +1,4 @@
 from questiongenerator import QuestionGenerator
-from questiongenerator import print_qa
 
 def Qa_Gen(text):
     qg = QuestionGenerator()
