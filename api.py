@@ -1,8 +1,6 @@
 import os
-import json
 import openai
-import hashlib
-from qa import *
+from wiki import *
 from qgen import *
 from typing import Optional
 from fastapi import FastAPI, UploadFile, Form
@@ -79,18 +77,15 @@ async def note_making(inputPrompt: str = Form(...)):
   return response.choices[0].text
 
 @app.post("/api/qagen")
-async def qa_generation(inputPrompt: str = Form(...)):
-  return Qa_Gen(inputPrompt)
-
-@app.post("/test")
-async def qa_generation(keywordPrompt: Optional[str] = Form(None),File: Optional[UploadFile] = None):
-  content = await File.read()
-  contentText=content.decode("utf-8")
-"""
-TODO:
-- Get Content form Wiki API for provided Keyword
-- Get QA from QA API for provided Content
-- Check Condition
-- Call QA API for QA
-- Return QA MCQ
-"""
+async def qa_generation(keywordPrompt: Optional[str] = Form(None), file: Optional[UploadFile] = None):
+  if file.filename == "" and keywordPrompt == None:
+    return {"Message": "Please provide a Keyword or TextFile"}
+  elif keywordPrompt != None:
+    getContent = wiki_content(keywordPrompt)
+    getQa = Qa_Gen(getContent)
+    return getQa
+  else:
+    fileContent = await file.read()
+    contentText = fileContent.decode("utf-8")
+    getQa = Qa_Gen(contentText)
+    return getQa
