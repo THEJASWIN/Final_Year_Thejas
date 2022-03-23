@@ -56,7 +56,10 @@ async def chat(inputPrompt: str = Form(...)):
 @app.post("/api/qa")
 async def qgen(keywordPrompt: str = Form(...),question: str = Form(...)):
   contentWiki = wiki(keywordPrompt)
-  generatedAnswer = qa_gen(contentWiki,question)
+  try:
+    generatedAnswer = qa_gen(contentWiki,question)
+  except RuntimeError:
+    return {"Message": "Sorry, The provided keyword content is too large to process!."}
   return generatedAnswer
 
 @app.post("/api/suggestion")

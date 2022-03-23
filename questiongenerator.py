@@ -24,7 +24,7 @@ class QuestionGenerator:
 
     def __init__(self) -> None:
 
-        QG_PRETRAINED = "iarfmoose/t5-base-question-generator"
+        QG_PRETRAINED = "./Models/t5-base-question-generator"
         self.ANSWER_TOKEN = "<answer>"
         self.CONTEXT_TOKEN = "<context>"
         self.SEQ_LENGTH = 512
