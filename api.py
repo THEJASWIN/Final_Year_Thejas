@@ -41,18 +41,6 @@ async def code(codePrompt: str = Form(...)):
     ) 
     return response.choices[0].text
 
-@app.post("/api/chat")
-async def chat(inputPrompt: str = Form(...)):
-  response = openai.Completion.create(
-    engine="text-ada-001",
-    prompt=inputPrompt,
-    max_tokens=100,
-    top_p=1,
-    frequency_penalty=0,
-    presence_penalty=0
-  )
-  return response.choices[0].text
-
 @app.post("/api/suggestion")
 async def suggestion(keywordPrompt: str = Form(...)):
   return show_suggestion(keywordPrompt)
@@ -72,7 +60,7 @@ async def note_making(inputPrompt: str = Form(...)):
 
 @app.post("/api/qagen")
 async def qa_generation(keywordPrompt: Optional[str] = Form(None), file: Optional[UploadFile] = None):
-  if file.filename == "" and keywordPrompt == None:
+  if not file and keywordPrompt == None:
     return {"Message": "Please provide a Keyword or TextFile"}
   elif keywordPrompt != None:
     getContent = wiki_content(keywordPrompt)
