@@ -1,9 +1,7 @@
 import os
 import openai
-from wiki import *
-from qgen import *
-from typing import Optional
-from fastapi import FastAPI, UploadFile, Form
+from wiki import show_suggestion
+from fastapi import FastAPI, Form
 from dotenv import load_dotenv,find_dotenv
 
 app=FastAPI()
@@ -57,17 +55,3 @@ async def note_making(inputPrompt: str = Form(...)):
   presence_penalty=0
 )
   return response.choices[0].text
-
-@app.post("/api/qagen")
-async def qa_generation(keywordPrompt: Optional[str] = Form(None), file: Optional[UploadFile] = None):
-  if not file and keywordPrompt == None:
-    return {"Message": "Please provide a Keyword or TextFile"}
-  elif keywordPrompt != None:
-    getContent = wiki_content(keywordPrompt)
-    getQa = Qa_Gen(getContent)
-    return getQa
-  else:
-    fileContent = await file.read()
-    contentText = fileContent.decode("utf-8")
-    getQa = Qa_Gen(contentText)
-    return getQa
