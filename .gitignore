@@ -1,4 +1,4 @@
-env/
+learnassist/
 .env
 __pycache__
 Testing/
