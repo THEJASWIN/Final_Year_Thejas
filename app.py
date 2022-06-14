@@ -3,8 +3,17 @@ import openai
 from wiki import show_suggestion
 from fastapi import FastAPI, Form
 from dotenv import load_dotenv,find_dotenv
+from fastapi.middleware.cors import CORSMiddleware
 
 app=FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 load_dotenv(find_dotenv())
 openai.api_key = os.getenv('OPEN_AI_APIKEY')
 
